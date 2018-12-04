@@ -9,9 +9,6 @@ data class Song(
     val category: String,
     val date: String,
     val imgUrl: String,
-    val fa_songName: String,
-    val fa_artistName: String,
-    val en_songName: String,
-    val en_artistName: String,
+    val views: String,
     val songPage: SongPage? = null
 )

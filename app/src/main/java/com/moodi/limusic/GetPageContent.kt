@@ -10,15 +10,18 @@ import java.net.MalformedURLException
 import java.net.URL
 import java.net.UnknownHostException
 
-interface GetPageContentCallback {
-    fun onGetPageCompelet(content: String)
-    fun onGetPageFailed()
-}
+
 
 class GetPageContent(val mCallback: GetPageContentCallback) : AsyncTask<String, Unit, String>() {
     private val TAG = "GetPageContent"
     private val D = false
 
+    interface GetPageContentCallback {
+        fun onGetPageCompelet(content: String)
+        fun onGetPageFailed(exception: Exception)
+    }
+
+    private lateinit var exception: Exception
     private val FAILED = "Failed"
 
     override fun doInBackground(vararg urls: String?): String {
@@ -43,17 +46,20 @@ class GetPageContent(val mCallback: GetPageContentCallback) : AsyncTask<String, 
             reader.close()
             return content.toString()
 
-        } catch (malf: MalformedURLException) {
-            if (D) Log.i(TAG, "doInBackground : malf is :=: ${malf}")
-            mCallback.onGetPageFailed()
+        } catch (e: MalformedURLException) {
+            exception = e
+            if (D) Log.i(TAG, "doInBackground : MalformedURLException is :=: ${e}")
             return FAILED
         } catch (e: FileNotFoundException) {
+            exception = e
             if (D) Log.i(TAG, "doInBackground : FileNotFoundException is :=: ${e}")
             return FAILED
         } catch (e: UnknownHostException) {
+            exception = e
             if (D) Log.i(TAG, "doInBackground : UnknownHostException is :=: ${e}")
             return FAILED
         } catch (e: Exception) {
+            exception = e
             if (D) Log.i(TAG, "doInBackground : Exception is :=: ${e}")
             return FAILED
         }
@@ -63,6 +69,8 @@ class GetPageContent(val mCallback: GetPageContentCallback) : AsyncTask<String, 
         super.onPostExecute(result)
         if (result != FAILED) {
             mCallback.onGetPageCompelet(result!!)
+        } else {
+            mCallback.onGetPageFailed(exception)
         }
     }
 
