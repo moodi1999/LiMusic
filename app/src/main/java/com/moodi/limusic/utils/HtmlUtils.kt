@@ -63,12 +63,16 @@ class HtmlUtils(val htmlDoc: String) {
             title = try {
                 title = patterMs(storage.PT_TITLE, songC)
                 try {
-                    title.split(storage.SP_TITLE)[1]
+                    title.split(storage.SP_TITLE)[1]  // حذف ؛دانلود؛ در متن
                 } catch (e: Exception) {
                     title
                 }
             } catch (e: Exception) {
-                storage.NOT_FOUND
+                try {
+                    patterMs(storage.PT_TITLE2, songC) // find title in another line
+                } catch (e: Exception) {
+                    storage.NOT_FOUND
+                }
             }
             try {
                 category = ""
