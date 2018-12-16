@@ -1,4 +1,6 @@
-package com.moodi.limusic.model
+package com.moodi.limusic.model.data
+
+import com.moodi.limusic.model.SongPage
 
 /**
  * it's data model class that hold the song data

@@ -8,11 +8,9 @@ import com.moodi.limusic.R
 import com.moodi.limusic.View.Adaptors.ViewPageAdaptor
 import com.moodi.limusic.View.Fragments.SongsFragment
 import com.moodi.limusic.View.interfaces.IActivityView
-import com.moodi.limusic.model.Song
-import com.moodi.limusic.model.objser
-import com.moodi.limusic.storage.storage
+import com.moodi.limusic.model.data.Song
+import com.moodi.limusic.model.storage.storage
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.Serializable
 
 class MainActivity : AppCompatActivity(),
     IActivityView {
@@ -20,57 +18,48 @@ class MainActivity : AppCompatActivity(),
     private val TAG = "MainActivity"
     private val D = true
 
+    private var mSongs: ISongsPD? = null
+
+    interface ISongsPD {
+        fun onSongRecived(model: ArrayList<Song>)
+    }
+
+    fun setAboutDataListener(listener: ISongsPD) {
+        this.mSongs = listener
+    }
+
     private lateinit var iActivityPre: IActivityPre
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        button.setOnClickListener {
-            getDate("http://pop-music.ir/page/3")
-        }
         iActivityPre = ActivityPresenter(this)
+
         uiInit()
-//        getDate(storage.MAIN_URL)
+        getDate(storage.MAIN_URL)
     }
 
-    private fun getDate(st: String) {
-        iActivityPre.onFetchingStart(st)
+    private fun getDate(url: String) {
+        iActivityPre.onFetchingStart(url)
     }
 
     //UI
     private fun uiInit() {
-        //viewPagerInit(null)
+        viewPagerInit()
     }
 
-    private fun viewPagerInit(songs: ArrayList<Song>?) {  // View pager and Tab Layout
+    private fun viewPagerInit() {  // View pager and Tab Layout
 
         val viewPad = ViewPageAdaptor(supportFragmentManager)
-        /*val fragment = SongsFragment()
-        if (songs != null) {
-            val ser = objser(songs)
-            fragment.arguments = Bundle().apply {
-                putSerializable("Songs", ser)
-                putString("m", "m")
-            }
-
-            println("got here")
-        }*/
-
-        var fragment = BlankFragment()
-        if (songs != null) {
-            fragment = BlankFragment.newInstance(objser(songs))
-        }
-
-        viewPad.addFragment(fragment, "Songs")
+        viewPad.addFragment(SongsFragment(), "Songs")
         viewpager.adapter = viewPad
         tab_bar_layout.setViewPager(viewpager)
     }
 
-    //    view impl
+    //  view impl
     override fun onActivityStart(songs: ArrayList<Song>?) {
-        println(songs?.get(0)?.title)
-        viewPagerInit(songs)
+        mSongs?.onSongRecived(songs!!)
     }
 
 }

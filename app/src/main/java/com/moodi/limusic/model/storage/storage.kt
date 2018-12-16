@@ -1,4 +1,4 @@
-package com.moodi.limusic.storage
+package com.moodi.limusic.model.storage
 
 import java.io.Serializable
 

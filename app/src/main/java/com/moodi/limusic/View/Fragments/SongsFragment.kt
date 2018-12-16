@@ -8,10 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.moodi.limusic.R
-import com.moodi.limusic.model.Song
-import com.moodi.limusic.model.objser
+import com.moodi.limusic.View.Activi.MainActivity
+import com.moodi.limusic.model.data.Song
+import kotlinx.android.synthetic.main.fragment_songs.view.*
 
-class SongsFragment : Fragment() {
+class SongsFragment : Fragment(), MainActivity.ISongsPD {
+
+    override fun onSongRecived(model: ArrayList<Song>) {
+        println("blank frag" + model[0].title + "yes you are")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -19,23 +24,12 @@ class SongsFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_songs, container, false)
+        (activity as MainActivity).setAboutDataListener(this)
+        val recycler = view.song_fr_recyclerview
+
+
 
         return view
     }
-
-    override fun onResume() {
-        super.onResume()
-            println("not got here")
-        if (arguments != null) {
-            println("in if resume")
-
-            val m = arguments?.getString("m")
-            println(m)
-            val arg = arguments?.getSerializable("Songs")
-            var title = (arg as objser)
-            println(title.song.get(0).title + "frag")
-        }
-    }
-
 
 }

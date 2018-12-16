@@ -1,8 +1,8 @@
 package com.moodi.limusic.asyncTasks
 
 import android.os.AsyncTask
-import com.moodi.limusic.utils.HtmlUtils
-import com.moodi.limusic.model.Song
+import com.moodi.limusic.model.utils.HtmlUtils
+import com.moodi.limusic.model.data.Song
 
 class FetchSongs(val mCallback: FetchSongsCallback) : AsyncTask<String, Unit, ArrayList<Song>>() {
     private val D = true

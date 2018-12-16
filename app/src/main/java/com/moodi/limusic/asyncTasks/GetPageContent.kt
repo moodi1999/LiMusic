@@ -11,7 +11,6 @@ import java.net.URL
 import java.net.UnknownHostException
 
 
-
 class GetPageContent(val mCallback: GetPageContentCallback) : AsyncTask<String, Unit, String>() {
     private val TAG = "GetPageContent"
     private val D = false

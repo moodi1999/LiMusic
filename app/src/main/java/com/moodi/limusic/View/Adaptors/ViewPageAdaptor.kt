@@ -29,5 +29,4 @@ class ViewPageAdaptor(fm: FragmentManager): FragmentPagerAdapter(fm) {
         fragmentTitle.add(title)
     }
 
-
 }

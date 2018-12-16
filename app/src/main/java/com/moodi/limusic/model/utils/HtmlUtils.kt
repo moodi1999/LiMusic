@@ -1,8 +1,8 @@
-package com.moodi.limusic.utils
+package com.moodi.limusic.model.utils
 
 import android.util.Log
-import com.moodi.limusic.model.Song
-import com.moodi.limusic.storage.storage
+import com.moodi.limusic.model.data.Song
+import com.moodi.limusic.model.storage.storage
 import java.util.regex.Pattern
 
 /**
