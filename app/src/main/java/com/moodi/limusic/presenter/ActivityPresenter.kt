@@ -19,12 +19,12 @@ class ActivityPresenter(private val iActivityView: IActivityView) : IActivityPre
         FetchSongs(this).execute(content)
     }
 
-    override fun onGetPageFailed(exception: Exception) {
-        iActivityView.onActivityStart(null)
+    override fun onGetPageFailed(exception: String) {
+        iActivityView.MainActivityView(null)
     }
 
     // FetchSongsCallbacks
     override fun onSongsAvailable(songs: ArrayList<Song>) {
-        iActivityView.onActivityStart(songs)
+        iActivityView.MainActivityView(songs)
     }
 }

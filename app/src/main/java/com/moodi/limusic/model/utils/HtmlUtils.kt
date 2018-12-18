@@ -3,15 +3,67 @@ package com.moodi.limusic.model.utils
 import android.util.Log
 import com.moodi.limusic.model.data.Song
 import com.moodi.limusic.model.storage.storage
+import java.io.BufferedReader
+import java.io.FileNotFoundException
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.MalformedURLException
+import java.net.URL
+import java.net.UnknownHostException
 import java.util.regex.Pattern
 
 /**
  * do all things about the html document that we have download
  * look at methods document
  */
-class HtmlUtils(val htmlDoc: String) {
+class HtmlUtils {
     private val D = false
     private val TAG = "HtmlUtils"
+
+    /**
+     * this method need a url for connecting to web
+     * and getting the page document and will
+     * return a status log.
+     * [storage.OK] : page content is in the app as a [String]
+     * [storage.FAILED] : something failed and method will return the
+     * exception as string.
+     */
+    fun GetWebPageHtmlDoc(url: String): Array<String>{
+        val content = StringBuilder()
+
+        try {
+            val connection = URL(url).openConnection() as HttpURLConnection
+            val reader = BufferedReader(InputStreamReader(connection.inputStream))
+            var readChars: Int
+            val inputBuffer = CharArray(500)
+            while (true) {
+                readChars = reader.read(inputBuffer)
+
+                if (readChars < 0) {
+                    break
+                }
+                if (readChars > 0) {
+                    content.append(String(inputBuffer, 0, readChars))
+                }
+            }
+
+            reader.close()
+            return arrayOf(storage.OK, content.toString())
+
+        } catch (e: MalformedURLException) {
+            if (D) Log.i(TAG, "doInBackground : MalformedURLException is :=: ${e}")
+            return arrayOf(storage.FAILED, e.toString())
+        } catch (e: FileNotFoundException) {
+            if (D) Log.i(TAG, "doInBackground : FileNotFoundException is :=: ${e}")
+            return arrayOf(storage.FAILED, e.toString())
+        } catch (e: UnknownHostException) {
+            if (D) Log.i(TAG, "doInBackground : UnknownHostException is :=: ${e}")
+            return arrayOf(storage.FAILED, e.toString())
+        } catch (e: Exception) {
+            if (D) Log.i(TAG, "doInBackground : Exception is :=: ${e}")
+            return arrayOf(storage.FAILED, e.toString())
+        }
+    }
 
 
     /**
@@ -19,7 +71,7 @@ class HtmlUtils(val htmlDoc: String) {
      * and return them as a [List] of their
      * content.
      */
-    fun splitSongs(): MutableList<String>? {
+    fun splitSongs(htmlDoc: String): MutableList<String>? {
         var songsArray: MutableList<String>? = null
         try {
             songsArray = (htmlDoc.split(storage.SP_SONG)).toMutableList()
@@ -61,12 +113,7 @@ class HtmlUtils(val htmlDoc: String) {
                 storage.NOT_FOUND
             }
             title = try {
-                title = patterMs(storage.PT_TITLE, songC)
-                try {
-                    title.split(storage.SP_TITLE)[1]  // حذف ؛دانلود؛ در متن
-                } catch (e: Exception) {
-                    title
-                }
+                patterMs(storage.PT_TITLE, songC)
             } catch (e: Exception) {
                 try {
                     patterMs(storage.PT_TITLE2, songC) // find title in another line
@@ -74,6 +121,13 @@ class HtmlUtils(val htmlDoc: String) {
                     storage.NOT_FOUND
                 }
             }
+
+            title = try {
+                title.split(storage.SP_TITLE)[1]  // حذف ؛دانلود؛ در متن
+            } catch (e: Exception) {
+                title
+            }
+
             try {
                 category = ""
                 val matcher = Pattern.compile(storage.PT_CATEGORIES).matcher(songC)

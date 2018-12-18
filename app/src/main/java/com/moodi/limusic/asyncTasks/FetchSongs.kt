@@ -13,8 +13,8 @@ class FetchSongs(val mCallback: FetchSongsCallback) : AsyncTask<String, Unit, Ar
     }
 
     override fun doInBackground(vararg params: String?): ArrayList<Song>? {
-        HtmlUtils(params[0]!!).run {
-            return fetchSongData(splitSongs()!!)
+        HtmlUtils().run {
+            return fetchSongData(splitSongs(params[0]!!)!!)
         }
     }
 

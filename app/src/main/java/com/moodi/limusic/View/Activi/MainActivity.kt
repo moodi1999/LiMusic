@@ -18,13 +18,13 @@ class MainActivity : AppCompatActivity(),
     private val TAG = "MainActivity"
     private val D = true
 
-    private var mSongs: ISongsPD? = null
+    private var mSongs: onSongsArrReceived? = null
 
-    interface ISongsPD {
-        fun onSongRecived(model: ArrayList<Song>)
+    interface onSongsArrReceived {
+        fun onSongsReceived(songs: ArrayList<Song>)
     }
 
-    fun setAboutDataListener(listener: ISongsPD) {
+    fun setAboutDataListener(listener: onSongsArrReceived) {
         this.mSongs = listener
     }
 
@@ -58,8 +58,8 @@ class MainActivity : AppCompatActivity(),
     }
 
     //  view impl
-    override fun onActivityStart(songs: ArrayList<Song>?) {
-        mSongs?.onSongRecived(songs!!)
+    override fun MainActivityView(songs: ArrayList<Song>?) {
+        mSongs?.onSongsReceived(songs!!)
     }
 
 }

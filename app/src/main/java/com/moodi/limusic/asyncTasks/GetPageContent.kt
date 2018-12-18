@@ -2,6 +2,8 @@ package com.moodi.limusic.asyncTasks
 
 import android.os.AsyncTask
 import android.util.Log
+import com.moodi.limusic.model.storage.storage
+import com.moodi.limusic.model.utils.HtmlUtils
 import java.io.BufferedReader
 import java.io.FileNotFoundException
 import java.io.InputStreamReader
@@ -11,65 +13,25 @@ import java.net.URL
 import java.net.UnknownHostException
 
 
-class GetPageContent(val mCallback: GetPageContentCallback) : AsyncTask<String, Unit, String>() {
+class GetPageContent(val mCallback: GetPageContentCallback) : AsyncTask<String, Unit, Array<String>>() {
     private val TAG = "GetPageContent"
     private val D = false
 
     interface GetPageContentCallback {
         fun onGetPageCompelet(content: String)
-        fun onGetPageFailed(exception: Exception)
+        fun onGetPageFailed(exception: String)
     }
 
-    private lateinit var exception: Exception
-    private val FAILED = "Failed"
-
-    override fun doInBackground(vararg urls: String?): String {
-        val content = StringBuilder()
-
-        try {
-            val connection = URL(urls[0]).openConnection() as HttpURLConnection
-            val reader = BufferedReader(InputStreamReader(connection.inputStream))
-            var readChars: Int
-            val inputBuffer = CharArray(500)
-            while (true) {
-                readChars = reader.read(inputBuffer)
-
-                if (readChars < 0) {
-                    break
-                }
-                if (readChars > 0) {
-                    content.append(String(inputBuffer, 0, readChars))
-                }
-            }
-
-            reader.close()
-            return content.toString()
-
-        } catch (e: MalformedURLException) {
-            exception = e
-            if (D) Log.i(TAG, "doInBackground : MalformedURLException is :=: ${e}")
-            return FAILED
-        } catch (e: FileNotFoundException) {
-            exception = e
-            if (D) Log.i(TAG, "doInBackground : FileNotFoundException is :=: ${e}")
-            return FAILED
-        } catch (e: UnknownHostException) {
-            exception = e
-            if (D) Log.i(TAG, "doInBackground : UnknownHostException is :=: ${e}")
-            return FAILED
-        } catch (e: Exception) {
-            exception = e
-            if (D) Log.i(TAG, "doInBackground : Exception is :=: ${e}")
-            return FAILED
-        }
+    override fun doInBackground(vararg urls: String?): Array<String> {
+        return HtmlUtils().GetWebPageHtmlDoc(urls[0]!!)
     }
 
-    override fun onPostExecute(result: String?) {
+    override fun onPostExecute(result: Array<String>) {
         super.onPostExecute(result)
-        if (result != FAILED) {
-            mCallback.onGetPageCompelet(result!!)
+        if (result[0] == storage.OK) {
+            mCallback.onGetPageCompelet(result[1])
         } else {
-            mCallback.onGetPageFailed(exception)
+            mCallback.onGetPageFailed(result[1])
         }
     }
 

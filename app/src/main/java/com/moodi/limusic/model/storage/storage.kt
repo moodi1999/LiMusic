@@ -25,4 +25,7 @@ object storage : Serializable {
 
     // Errors
     val NOT_FOUND = "Not Found!"
+    val FAILED = "Failed"
+
+    val OK = "OK"
 }
