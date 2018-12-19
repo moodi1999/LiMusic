@@ -39,5 +39,6 @@ dependencies {
 
 //    external library
     implementation 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
+    implementation 'com.squareup.picasso:picasso:2.5.0'
 
 }
