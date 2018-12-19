@@ -1,16 +1,8 @@
-package com.moodi.limusic.asyncTasks
+package com.moodi.limusic.presenter.asyncTasks
 
 import android.os.AsyncTask
-import android.util.Log
 import com.moodi.limusic.model.storage.storage
 import com.moodi.limusic.model.utils.HtmlUtils
-import java.io.BufferedReader
-import java.io.FileNotFoundException
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.MalformedURLException
-import java.net.URL
-import java.net.UnknownHostException
 
 
 class GetPageContent(val mCallback: GetPageContentCallback) : AsyncTask<String, Unit, Array<String>>() {

@@ -128,6 +128,12 @@ class HtmlUtils {
                 title
             }
 
+            title = try {
+                title.split(" جدید")[0] + title.split(" جدید")[1]
+            } catch (e: Exception) {
+                title
+            }
+
             try {
                 category = ""
                 val matcher = Pattern.compile(storage.PT_CATEGORIES).matcher(songC)

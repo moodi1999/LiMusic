@@ -1,4 +1,4 @@
-package com.moodi.limusic.asyncTasks
+package com.moodi.limusic.presenter.asyncTasks
 
 import android.os.AsyncTask
 import com.moodi.limusic.model.utils.HtmlUtils

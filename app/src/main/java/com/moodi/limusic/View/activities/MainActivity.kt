@@ -1,4 +1,4 @@
-package com.moodi.limusic.View.Activi
+package com.moodi.limusic.View.activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -17,16 +17,6 @@ class MainActivity : AppCompatActivity(),
 
     private val TAG = "MainActivity"
     private val D = true
-
-    private var mSongs: onSongsArrReceived? = null
-
-    interface onSongsArrReceived {
-        fun onSongsReceived(songs: ArrayList<Song>)
-    }
-
-    fun setAboutDataListener(listener: onSongsArrReceived) {
-        this.mSongs = listener
-    }
 
     private lateinit var iActivityPre: IActivityPre
 
@@ -62,4 +52,12 @@ class MainActivity : AppCompatActivity(),
         mSongs?.onSongsReceived(songs!!)
     }
 
+    // passing data to Fragment interface
+    private var mSongs: onSongsArrReceived? = null
+    interface onSongsArrReceived {
+        fun onSongsReceived(songs: ArrayList<Song>)
+    }
+    fun setMSongs(listener: onSongsArrReceived) {
+        this.mSongs = listener
+    }
 }

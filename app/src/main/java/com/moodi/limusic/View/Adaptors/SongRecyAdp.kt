@@ -28,6 +28,7 @@ class SongRecyAdp(val context: Context, val songs: ArrayList<Song>) : RecyclerVi
 
     inner class SViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title = itemView.song_title
+        val view = itemView
     }
 
 }

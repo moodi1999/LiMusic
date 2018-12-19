@@ -1,4 +1,4 @@
-package com.moodi.limusic.model
+package com.moodi.limusic.model.data
 
 data class SongPage(
     val pageContent: String,
