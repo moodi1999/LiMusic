@@ -1,4 +1,4 @@
-package com.moodi.limusic.enums
+package com.moodi.limusic.model.enums
 
 enum class FetchSongCallType {
     SINGLE_TAP,

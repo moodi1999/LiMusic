@@ -1,10 +1,14 @@
 package com.moodi.limusic.model.storage
 
+import com.moodi.limusic.model.data.Song
 import java.io.Serializable
 
 object storage : Serializable {
 
     val MAIN_URL = "http://pop-music.ir/"
+
+    // recent song arr
+    var recentSong: ArrayList<Song>? = null
 
     // split main song content
     val SP_SONG = "<article class=\"post\">"
@@ -15,7 +19,7 @@ object storage : Serializable {
     // Split, matchers and patterns for fetch data from the html document
     val PT_LINK = "<h2><a href=\"(.*?)\" rel=\"bookmark\" title=\""
     val SP_TITLE = "دانلود"
-    val PT_TITLE = "title=\"(.*?)\" alt="
+    val PT_TITLE = "title=\"(.*?)\" src=\""
     val PT_TITLE2 = "\"bookmark\" title=\"(.*?)\">"
     val PT_CATEGORIES = "rel=\"category tag\">(.*?)</a>"
     val PT_DATE = "<span class=\"date\">(.*?)</span>"

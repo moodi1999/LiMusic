@@ -1,11 +1,12 @@
 package com.moodi.limusic.presenter
 
-import com.moodi.limusic.View.interfaces.IActivityView
+import com.moodi.limusic.View.interfaces.MainActvityView
 import com.moodi.limusic.presenter.asyncTasks.FetchSongs
 import com.moodi.limusic.presenter.asyncTasks.GetPageContent
 import com.moodi.limusic.model.data.Song
 
-class ActivityPresenter(private val iActivityView: IActivityView) : IActivityPre,
+class MainActivityPresenter(private val mainActvityView: MainActvityView) :
+    IActivityPre,
     GetPageContent.GetPageContentCallback,
     FetchSongs.FetchSongsCallback
 {
@@ -20,11 +21,11 @@ class ActivityPresenter(private val iActivityView: IActivityView) : IActivityPre
     }
 
     override fun onGetPageFailed(exception: String) {
-        iActivityView.MainActivityView(null)
+        mainActvityView.onSongFetchFailed(exception)
     }
 
     // FetchSongsCallbacks
     override fun onSongsAvailable(songs: ArrayList<Song>) {
-        iActivityView.MainActivityView(songs)
+        mainActvityView.onSongFetchSucceed(songs)
     }
 }

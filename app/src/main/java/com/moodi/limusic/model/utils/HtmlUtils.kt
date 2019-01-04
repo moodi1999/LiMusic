@@ -17,7 +17,7 @@ import java.util.regex.Pattern
  * look at methods document
  */
 class HtmlUtils {
-    private val D = false
+    private val D = true
     private val TAG = "HtmlUtils"
 
     /**
@@ -148,11 +148,13 @@ class HtmlUtils {
             } catch (e: Exception) {
                 storage.NOT_FOUND
             }
+
             imgUrl = try {
                 patterMs(storage.PT_IMG_URL, songC)
             } catch (e: Exception) {
                 storage.NOT_FOUND
             }
+
             views = try {
                 patterMs(storage.PT_VIEWS, songC)
             } catch (e: Exception) {
